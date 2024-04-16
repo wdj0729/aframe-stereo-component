@@ -1,26 +1,51 @@
 <html>
   <head>
-    <title>A-Frame Layer Component - Basic</title>
+    <title>My A-Frame Scene</title>
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="../build.js"></script>
   </head>
   <body>
-
-
-
-
     <a-scene>
+      <!--
+      stereoscopic panoramic render by
+      http://pedrofe.com/rendering-for-oculus-rift-with-arnold/
+      http://www.meryproject.com/
+ -->
+      <!-- side by side equirectangular projected video -->
+      <video src="textures/MaryOculus.webm" loop id="Mary"></video>
 
-       <a-assets>
-           <video src="textures/MaryOculus.mp4" id="myVideo"></video>
-       </a-assets>
-      <!-- Camera -->
-      <a-entity camera look-controls position="0 0 0" stereocam="eye:left;"></a-entity>
-      <!-- Video spheres -->
-      <a-entity scale="-1 1 1" geometry="primitive:sphere; radius:100; segmentsWidth: 64; segmentsHeight:64" material="shader:flat; src:#myVideo; side:back" stereo="eye:left"></a-entity>
-      <a-entity scale="-1 1 1" geometry="primitive:sphere; radius:100; segmentsWidth: 64; segmentsHeight:64" material="shader:flat; src:#myVideo; side:back" stereo="eye:right"></a-entity>
+      <!-- we tell here the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
+      and it it's active, only render those entities in the 'left' eye -->
 
+      <a-camera position="0 0 50" stereocam="eye:left;">
+        <a-cursor color="black"></a-cursor>
+      </a-camera>
+
+      <!-- native sphere, will render on 'left' eye, and will take only the first half of the video for projection -->
+
+      <a-entity
+        geometry="primitive: sphere;
+                      radius: 100;
+                      segmentsWidth: 64;
+                      segmentsHeight: 64;"
+        material="shader: flat; src: #Mary; side:back;"
+        scale="-1 1 1"
+        stereo="eye:left;"
+      >
+      </a-entity>
+
+      <!-- native sphere, will render on 'right' eye, and will take only the second half of the video for projection -->
+
+      <a-entity
+        geometry="primitive: sphere;
+                      radius: 100;
+                      segmentsWidth: 64;
+                      segmentsHeight: 64;"
+        material="shader: flat; src: #Mary; side:back;"
+        scale="-1 1 1"
+        stereo="eye:right;"
+      >
+      </a-entity>
     </a-scene>
-
   </body>
 </html>
