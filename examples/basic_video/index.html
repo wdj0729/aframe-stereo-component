@@ -1,6 +1,7 @@
 <html>
   <head>
     <title>My A-Frame Scene</title>
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="../build.js"></script>
   </head>
@@ -12,7 +13,13 @@
       http://www.meryproject.com/
  -->
       <!-- side by side equirectangular projected video -->
-      <video src="textures/MaryOculus.webm" loop id="Mary"></video>
+      <video
+        src="textures/q102_syn_180.mp4"
+        loop
+        webkit-playsinline
+        playsinline
+        id="Mary"
+      ></video>
 
       <!-- we tell here the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
       and it it's active, only render those entities in the 'left' eye -->
