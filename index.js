@@ -102,6 +102,7 @@ module.exports = {
 
         this.originalGeometry = object3D.geometry;
         object3D.geometry = geometry;
+
         this.videoEl = this.el.object3D.children[0].material.map.image;
 
         var self = this;
@@ -146,9 +147,8 @@ module.exports = {
 
           var self = this;
 
-          this.el.sceneEl.canvas.onclick = function () {
-            self.videoEl.play();
-          };
+          self.videoEl.muted = true;
+          self.videoEl.play();
 
           // Signal that click event is added
           this.video_click_event_added = true;
