@@ -106,16 +106,12 @@ module.exports = {
 
         this.originalGeometry = object3D.geometry;
         object3D.geometry = geometry;
-        if (this.data.playOnClick) {
-          if (typeof this.el.sceneEl.canvas !== "undefined") {
-            this.videoEl = this.el.object3D.children[0].material.map.image;
+        this.videoEl = this.el.object3D.children[0].material.map.image;
 
-            var self = this;
+        var self = this;
 
-            self.videoEl.muted = true;
-            self.videoEl.play();
-          }
-        }
+        self.videoEl.muted = true;
+        self.videoEl.play();
       }
     },
 
