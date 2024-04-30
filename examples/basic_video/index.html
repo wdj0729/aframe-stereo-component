@@ -5,15 +5,12 @@
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="../build.js"></script>
     <script>
-      // to set specific time of video
-      document.querySelector(
-        "#Mary"
-      ).components.material.data.src.currentTime = 0; // start of video
-
-      // to play the videosphere
-      document
-        .querySelector("#Mary")
-        .components.material.material.map.image.play();
+      AFRAME.registerComponent("play-pause", {
+        init: function () {
+          let myVideo = document.querySelector("#Mary");
+          myVideo.play();
+        },
+      });
     </script>
   </head>
   <body>
@@ -36,6 +33,10 @@
       </a-assets>
 
       <a-videosphere src="#Mary"></a-videosphere>
+
+      <a-videosphere
+        src="textures/great-barrier-reef-scuba-diving-360-vr-multi-shot-SBV-318266249-preview.mp4"
+      ></a-videosphere>
 
       <!-- we tell here the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
       and it it's active, only render those entities in the 'left' eye -->
