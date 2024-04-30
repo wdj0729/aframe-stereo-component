@@ -89,6 +89,8 @@
 	      // Keep in mind that canvas is the last thing initialized on a scene so have to wait for the event
 	      // or just check in every tick if is not undefined
 
+	      this.material_is_a_video = false;
+
 	      // Check if material is a video from html tag (object3D.material.map instanceof THREE.VideoTexture does not
 	      // always work
 
@@ -98,6 +100,16 @@
 	        this.el.getAttribute("material").src !== ""
 	      ) {
 	        var src = this.el.getAttribute("material").src;
+
+	        // If src is an object and its tagName is video...
+
+	        if (
+	          typeof src === "object" &&
+	          "tagName" in src &&
+	          src.tagName === "VIDEO"
+	        ) {
+	          this.material_is_a_video = true;
+	        }
 	      }
 
 	      var object3D = this.el.object3D.children[0];
@@ -112,7 +124,7 @@
 	        return object3D.geometry instanceof geometry;
 	      });
 
-	      if (isValidGeometry) {
+	      if (isValidGeometry && this.material_is_a_video) {
 	        // if half-dome mode, rebuild geometry (with default 100, radius, 64 width segments and 64 height segments)
 
 	        if (this.data.mode === "half") {
@@ -176,12 +188,6 @@
 
 	        this.originalGeometry = object3D.geometry;
 	        object3D.geometry = geometry;
-	        this.videoEl = this.el.object3D.children[0].material.map.image;
-
-	        var self = this;
-
-	        self.videoEl.muted = true;
-	        self.videoEl.play();
 	      }
 	    },
 
@@ -220,12 +226,8 @@
 
 	          var self = this;
 
-	          this.el.sceneEl.canvas.onclick = function () {
-	            self.videoEl.play();
-	          };
-
-	          // Signal that click event is added
-	          this.video_click_event_added = true;
+	          self.videoEl.muted = true;
+	          self.videoEl.play();
 	        }
 	      }
 	    },
