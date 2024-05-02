@@ -4,14 +4,6 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="../build.js"></script>
-    <script>
-      AFRAME.registerComponent("play-pause", {
-        init: function () {
-          let myVideo = document.querySelector("#Mary");
-          myVideo.play();
-        },
-      });
-    </script>
   </head>
   <body>
     <a-scene>
@@ -31,12 +23,6 @@
           id="Mary"
         ></video>
       </a-assets>
-
-      <a-videosphere src="#Mary"></a-videosphere>
-
-      <a-videosphere
-        src="textures/great-barrier-reef-scuba-diving-360-vr-multi-shot-SBV-318266249-preview.mp4"
-      ></a-videosphere>
 
       <!-- we tell here the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
       and it it's active, only render those entities in the 'left' eye -->
@@ -78,8 +64,7 @@
         bottom: 20px;
         left: 20px;
         width: fit-content;
-        background: white;
-        color: black;
+        color: white;
         text-decoration: none;
       "
       href="index2.html"

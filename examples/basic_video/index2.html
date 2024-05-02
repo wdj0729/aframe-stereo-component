@@ -4,16 +4,28 @@
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <script src="https://aframe.io/releases/1.4.2/aframe.min.js"></script>
     <script src="../build.js"></script>
-    <script>
-      AFRAME.registerComponent("play-pause", {
-        init: function () {
-          let myVideo = document.querySelector("#Mary");
-          myVideo.play();
-        },
-      });
-    </script>
+    <style type="text/css">
+      #splash {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+
+        align-items: center;
+        justify-content: center;
+
+        color: white;
+        cursor: pointer;
+        z-index: 999;
+      }
+    </style>
   </head>
   <body>
+    <div id="splash">
+      <div id="start-button">Start</div>
+    </div>
     <a-scene>
       <!--
       stereoscopic panoramic render by
@@ -25,51 +37,30 @@
         <video
           src="textures/great-barrier-reef-scuba-diving-360-vr-multi-shot-SBV-318266249-preview.mp4"
           loop
-          muted
+          webkit-playsinline
           playsinline
           autoplay
           id="Mary"
         ></video>
       </a-assets>
 
-      <a-videosphere src="#Mary"></a-videosphere>
-
-      <a-videosphere
-        src="textures/great-barrier-reef-scuba-diving-360-vr-multi-shot-SBV-318266249-preview.mp4"
-      ></a-videosphere>
-
       <!-- we tell here the camera to render (outside VR mode, in monoscopic mode) everything without the 'stereo' component active
       and it it's active, only render those entities in the 'left' eye -->
 
-      <a-camera position="0 0 50" stereocam="eye:left;">
-        <a-cursor color="black"></a-cursor>
+      <!-- Camera -->
+      <a-camera>
+        <a-cursor></a-cursor>
       </a-camera>
 
-      <!-- native sphere, will render on 'left' eye, and will take only the first half of the video for projection -->
-
-      <a-entity
-        geometry="primitive: sphere;
-                      radius: 100;
-                      segmentsWidth: 64;
-                      segmentsHeight: 64;"
-        material="shader: flat; src: #Mary; side:back;"
-        scale="-1 1 1"
-        stereo="eye:left;"
-      >
-      </a-entity>
-
-      <!-- native sphere, will render on 'right' eye, and will take only the second half of the video for projection -->
-
-      <a-entity
-        geometry="primitive: sphere;
-                      radius: 100;
-                      segmentsWidth: 64;
-                      segmentsHeight: 64;"
-        material="shader: flat; src: #Mary; side:back;"
-        scale="-1 1 1"
-        stereo="eye:right;"
-      >
-      </a-entity>
+      <!-- 360 video -->
+      <a-videosphere
+        id="sphere"
+        src="#Mary"
+        rotation="0 -180 0"
+        radius="100"
+        segmentsWidth="64"
+        segmentsHeight="64"
+      ></a-videosphere>
     </a-scene>
 
     <a
@@ -78,13 +69,36 @@
         bottom: 20px;
         left: 20px;
         width: fit-content;
-        background: white;
-        color: black;
+        color: white;
         text-decoration: none;
       "
       href="index.html"
     >
       360 to 180
     </a>
+    <script>
+      document.addEventListener("DOMContentLoaded", function (event) {
+        var scene = document.querySelector("a-scene");
+        var vid = document.getElementById("Mary");
+        var sphere = document.getElementById("sphere");
+
+        scene.addEventListener("loaded", run);
+
+        function run() {
+          document.querySelector("#splash").style.display = "flex";
+          document
+            .querySelector("#splash")
+            .addEventListener("click", function () {
+              playVideo();
+              this.style.display = "none";
+            });
+        }
+
+        function playVideo() {
+          vid.play();
+          sphere.components.material.material.map.image.play();
+        }
+      });
+    </script>
   </body>
 </html>
